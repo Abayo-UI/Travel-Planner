@@ -9,9 +9,9 @@ import { signOut } from "next-auth/react";
 export default function Navbar( ) {
     const { data: session } = useSession();
   return (
-    <nav className="bg-white shadow-md  border-b border-gray-200">
+    <nav className="bg-white shadow-md  border-b border-gray-200 sticky w-full top-0 left-0 z-10">
       {" "}
-      <div className="container mx-auto flex justify-between items-center px-6 lg:px-8">
+      <div className="container mx-auto flex justify-between items-center px-2 lg:px-8">
         <Link href={"/"} className="flex items-center">
           <Image src={"/logo.webp"} alt="logo.webp" width={50} height={50} />
           <span className="text-2xl font-bold text-gray-800">
@@ -24,7 +24,7 @@ export default function Navbar( ) {
             <>
               <Link
                 href={"/trips"}
-                className="text-slate-900 hover:text-sky-500"
+                className="text-slate-900 hover:text-sky-500 whitespace-nowrap"
               >
                 My Trips
               </Link>
