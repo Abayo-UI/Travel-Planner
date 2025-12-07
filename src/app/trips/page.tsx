@@ -1,10 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { auth } from "../../../auth";
 import Link from "next/link";
+;
+import TripsClient from "./TripsClient";
 
-export default async function TripsPage() {
+export default async function TripsPage() {   
    const session = await auth();
 
+   if(!session?.user?.id){
+     return null
+   }
+   
    if(!session){
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -16,18 +22,15 @@ export default async function TripsPage() {
           <p className="text-gray-600 text-center">Please sign in to access your trips and enjoy personalized features.</p>
           <Link href="/api/auth/signin" className="mt-4 w-full">
             <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition">Sign In</button>
-          </Link>
-        </div>
+           </Link>
       </div>
-    );
+      </div>
+     );
    }
-    return (
-    <div className="space-y-2 container mx-auto px-4 py-8">
-      <h1> Dashboard</h1>
-       {/* We used Link from next/Link because using onClick would have forced me to make this component a client component but i want it to remain a server component */}
-       <Link href="/trips/new">
-        <Button variant={"default"} className="cursor-pointer">Add New Trip</Button>
-       </Link>
+   
+  return(
+    <div>
+      <TripsClient userId={ session?.user?.id}/>
     </div>
-  );
+  ) 
 }

@@ -7,7 +7,10 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
 export default function Navbar( ) {
-    const { data: session } = useSession();
+  const { data: session } = useSession();
+  console.log("SESSION:", session);
+
+  
   return (
     <nav className="bg-white shadow-md  border-b border-gray-200 sticky w-full top-0 left-0 z-10">
       {" "}
@@ -23,7 +26,7 @@ export default function Navbar( ) {
           { session ? (
             <>
               <Link
-                href={"/trips"}
+                href={`/trips?userId=${session?.user?.id}`}
                 className="text-slate-900 hover:text-sky-500 whitespace-nowrap"
               >
                 My Trips
