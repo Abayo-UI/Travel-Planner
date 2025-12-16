@@ -17,9 +17,10 @@ export async function POST(req: Request) {
       userId: data.userId,
       startDate: new Date(data.startDate),
       endDate: new Date(data.endDate),
-      imageUrl: data.imageUrl || null,
+      imageUrl: data.image || null,
     },
   });
+
   console.log('POST /api/trips: created trip:', trip);
 
   return new Response(JSON.stringify(trip), { status: 201 });

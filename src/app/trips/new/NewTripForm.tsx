@@ -3,8 +3,10 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { redirect } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { UploadButton } from '../../../../lib/upload-thing';
+import Image from 'next/image';
 
 interface NewTripFormProps {
   userId: string;
@@ -20,6 +22,7 @@ const NewTripForm: React.FC<NewTripFormProps> = ({ userId }) => {
       description: formData.get("description"),
       startDate: formData.get("startDate"),
       endDate: formData.get("endDate"),
+      image: imageUrl,
       userId,
     };
 
@@ -39,7 +42,8 @@ const NewTripForm: React.FC<NewTripFormProps> = ({ userId }) => {
       redirect(`/trips?userId=${userId}`);
     }
   }
-
+   
+  const [ imageUrl, setUmageUrl ] = useState<string | null >(null)
   return (
     <div className="flex flex-col items-center  my-10 mx-10"> 
       <Card className="w-full max-w-md">
@@ -87,6 +91,47 @@ const NewTripForm: React.FC<NewTripFormProps> = ({ userId }) => {
                 />
               </div>
             </div>
+
+            <div className="flex flex-col items-center mt-4">
+  <label className="text-sm font-medium text-gray-700 mb-2">Trip Image</label>
+
+  {imageUrl && (
+    <Image
+      src={imageUrl}
+      alt="Trip preview"
+      width={300}
+      height={100}
+      className="mb-4 rounded-md object-cover max-h-48"
+    />
+  )}
+
+  <div className="flex flex-col items-center gap-2">
+    <UploadButton
+  endpoint="imageUploader"
+  content={{ button: "Upload" }}
+  className="
+    ut-button:w-36 ut-button:h-10 ut-button:text-sm ut-button:px-3 ut-button:py-1
+    ut-button:bg-blue-500 ut-button:text-white ut-button:rounded-md ut-button:hover:bg-blue-600
+    ut-container:flex ut-container:justify-center
+  "
+  onClientUploadComplete={(res) => { if (res?.[0]?.ufsUrl) setUmageUrl(res[0].ufsUrl); }}
+  onUploadError={(e) => {
+  console.error("UploadThing error:", e);
+  toast.error("Error uploading image"); 
+}}
+
+/>
+
+
+
+
+    <p className="text-xs text-gray-500">
+      Max file size: 4MB — JPG, PNG, WebP
+    </p>
+  </div>
+</div>
+
+
             <Button type="submit" className="w-full mt-1">
               Create Trip
             </Button>
