@@ -7,6 +7,7 @@ import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
 
 interface Trips {
+  id: string
   title: string;
   description: string;
   startDate: string;
@@ -57,17 +58,29 @@ export default function TripsClient({ userId }: { userId: string }) {
              {`Upcoming trips ${ upcomingTrips.length }`}
           </CardContent>
          </Card>
-        <h2>My trips</h2>
-        {trip.length > 0 ? (
-          trip.map((t, idx) => 
-            <div key={idx}>
-              <p>{t.title}</p>
-              <p>{t.description}</p>
-            </div>
-          )
-        ) : (
-          <p>No trips found.</p>
-        )}
+          <p>Recent Trips</p>
+         { trip.length != 0  && 
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                { sortedTrips.slice(0,6).map( (trip, key) => (
+                  <Link key={key} href={`trips/${trip.id}`}>
+                    <Card className="h-full hover:shadow-md transition-shadow">
+                      <CardHeader> 
+                        <CardTitle className="line-clamp-1 font-bold text-xl"> { trip.title } </CardTitle>
+                      </CardHeader>
+
+                       <CardContent> 
+                        { trip.description } 
+                        <div className="mt-5"> 
+                           {new Date(trip.startDate).toLocaleDateString() }
+                           { "-"}
+                           { new Date(trip.endDate).toLocaleDateString()}
+                        </div>
+                       </CardContent>
+                    </Card>
+                  </Link> 
+                ))}
+              </div>
+             }
       </div>
     </div>
   );
