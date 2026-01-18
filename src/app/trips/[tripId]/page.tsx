@@ -1,6 +1,7 @@
 import React from 'react'
 import { auth } from '../../../../auth';
 import { prisma } from '../../../../lib/prisma';
+import TripDetailsClient from '@/components/TripDetailsClient';
 
 const tripDetailPage = async ({params}: {params: {tripId: string}}) => {
 
@@ -18,10 +19,17 @@ const tripDetailPage = async ({params}: {params: {tripId: string}}) => {
              id: tripId, 
              userId: session?.user?.id}
     })
+
+    if(!trip){
+      return(
+      <div className=" text-xl font-bold flex justify-center items-center h-screen">
+        Trip Not Found!
+      </div>
+    )}
     if (trip ){
   return (
     <div> 
-        { trip.title}
+        <TripDetailsClient  trip={trip}/>
     </div>
   )
 }

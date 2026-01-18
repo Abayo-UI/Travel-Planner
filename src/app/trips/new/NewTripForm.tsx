@@ -43,7 +43,7 @@ const NewTripForm: React.FC<NewTripFormProps> = ({ userId }) => {
     }
   }
    
-  const [ imageUrl, setUmageUrl ] = useState<string | null >(null)
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   return (
     <div className="flex flex-col items-center  my-10 mx-10"> 
       <Card className="w-full max-w-md">
@@ -106,6 +106,7 @@ const NewTripForm: React.FC<NewTripFormProps> = ({ userId }) => {
   )}
 
   <div className="flex flex-col items-center gap-2">
+
     <UploadButton
   endpoint="imageUploader"
   content={{ button: "Upload" }}
@@ -114,13 +115,19 @@ const NewTripForm: React.FC<NewTripFormProps> = ({ userId }) => {
     ut-button:bg-blue-500 ut-button:text-white ut-button:rounded-md ut-button:hover:bg-blue-600
     ut-container:flex ut-container:justify-center
   "
-  onClientUploadComplete={(res) => { if (res?.[0]?.ufsUrl) setUmageUrl(res[0].ufsUrl); }}
+  onClientUploadComplete={(res) => {
+    console.log("Upload complete (client):", res);
+    const maybeUrl =
+      res?.[0]?.ufsUrl ?? res?.[0]?.url ?? res?.[0]?.appUrl ?? res?.[0]?.serverData?.ufsUrl ?? null;
+    if (maybeUrl) setImageUrl(maybeUrl);
+  }}
   onUploadError={(e) => {
   console.error("UploadThing error:", e);
   toast.error("Error uploading image"); 
 }}
 
-/>
+/
+>
 
 
 
